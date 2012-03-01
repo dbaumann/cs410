@@ -1,0 +1,6 @@
+An assembler for the Hack platform, written in Scala.
+
+Tested in Scala 2.9.1
+
+Suggested usage:
+bash -x RUN.sh pong/Pong.asm
