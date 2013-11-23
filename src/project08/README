@@ -1,0 +1,9 @@
+A VM translator for the Hack platform, written in Scala.
+
+Tested in Scala 2.9.1
+
+Documentation:
+buildr project08:document
+
+Example Usage:
+buildr run ProgramFlow/BasicLoop/

@@ -1,0 +1,22 @@
+// This file is part of the materials accompanying the book 
+// "The Elements of Computing Systems" by Nisan and Schocken, 
+// MIT Press. Book site: www.idc.ac.il/tecs
+// File name: projects/01/Mux.hdl
+
+/** 
+ * Multiplexor. If sel==1 then out=b else out=a.
+ */
+
+CHIP Mux {
+    IN a, b, sel;
+    OUT out;
+
+    PARTS:
+    And(a=b,b=sel,out=bsel);
+    And(a=a,b=b,out=ab);
+    Or(a=bsel,b=ab,out=bselOab);
+    
+    Not(in=sel,out=Nsel);
+    And(a=a,b=Nsel,out=aNsel);
+    Or(a=bselOab,b=aNsel,out=out);
+}

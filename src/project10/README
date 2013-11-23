@@ -1,0 +1,18 @@
+A Jack compiler for the Hack platform, written in Scala.
+
+Tested in Scala 2.9.1
+
+Documentation:
+buildr project10:document
+
+Example Usage:
+buildr run Square/Main.jack
+
+Caveats:
+- Only handles valid .jack files. Invalid syntax will not result in an error message.
+
+
+Note to Grader:
+
+Produced XML will differ slightly in format from the provided compare files. The only difference
+is that scala.xml.PrettyPrinter does not produce any whitespace inside of empty non-terminal nodes.

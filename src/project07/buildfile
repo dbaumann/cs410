@@ -1,0 +1,17 @@
+require 'buildr/scala'
+
+repositories.remote << "http://mirrors.ibiblio.org/pub/mirrors/maven2"
+
+desc "cs410 translator project, part 1"
+define "project07" do
+  project.version = "1.0.0"
+  project.group = "project07"
+  manifest["Copyright"] = "Dan Baumann (C) 2012"
+
+  run.using :main => ["translator.Application", ARGV[1]]
+
+  task :document do
+    puts "Generating Scaladoc for #{project.name} in target/doc"
+    system "scaladoc -d target/doc src/main/scala/* 2> /dev/null"
+  end
+end

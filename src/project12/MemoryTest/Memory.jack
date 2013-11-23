@@ -1,0 +1,95 @@
+// This file is part of the materials accompanying the book 
+// "The Elements of Computing Systems" by Nisan and Schocken, 
+// MIT Press. Book site: www.idc.ac.il/tecs
+// File name: projects/12/Memory.jack
+
+/**
+ * Memory operations library.
+ */ 
+class Memory {
+
+    static Array memory;
+    static Array freeList;
+
+    /** Initializes memory parameters. */
+    function void init() {
+        let memory = 0;
+
+        let freeList = 2048;
+        let freeList[0] = 16384 - 2048; //the total size of the heap
+        let freeList[1] = -1; //the terminal value for the next node; new elements will be prepended
+
+        return;
+    }
+
+    /** Returns the value of the main memory at this address. */
+    function int peek(int address) {
+        return memory[address];
+    }
+
+    /** Sets the value of the main memory at this address
+     *  to the given value. */
+    function void poke(int address, int value) {
+        let memory[address] = value;
+        return;
+    }
+
+    /** finds and allocates from the heap a memory block of the 
+     *  specified size and returns a reference to its base address. */
+    function int alloc(int size) {
+        var int prev, current, length, next;
+        var int wordsRemaining, freeSegmentStart;
+
+        let prev = 0; //heap offset of previous freeList element
+        let current = 0; //heap offset of current freeList element
+        let length = freeList[current]; //size of current freeList element
+        let next = freeList[current + 1]; //heap offset of next freeList element
+
+        //find the first suitable free segment from freeList
+        while(length < (size + 1)) {
+            if(next = -1) { return 0; }
+
+            let prev = current;
+            let current = next;
+            let length = freeList[current];
+            let next = freeList[current + 1];
+        }
+
+        let wordsRemaining = length - (size + 1);
+
+        //if only part of the free segment is needed,
+        //compute the start address of `size` + 1 words at the end of the free segment
+        //then update the free segment size
+        if(wordsRemaining > 1) {
+            let freeSegmentStart = freeList + current + wordsRemaining;
+            let freeList[current] = wordsRemaining;
+        }
+        //else, all is needed or only 1 space left over, so splice the free segment out of freeList
+        else {
+            let freeSegmentStart = freeList + current;
+            let freeList[prev + 1] = next;
+        }
+
+        //store the size of the returned segment in the first word for dealloc() to use,
+        //then return the address immediately following that word
+        let freeSegmentStart[0] = size;
+        return freeSegmentStart + 1;
+    }
+
+    /** De-allocates the given object and frees its space. */
+    function void deAlloc(int object) {
+        var Array deallocatedSegment;
+
+        let deallocatedSegment = object - 1;
+        //deallocatedSegment[0] should contain the segment length from previous allocation
+
+        //prepend the deallocated segment to freeList
+        let deallocatedSegment[1] = freeList - 2048; //heap offset of the head element in freeList
+        
+
+        //not quite sure why this doesn't work
+        //let freeList = deallocatedSegment;
+
+        return;
+    }    
+}

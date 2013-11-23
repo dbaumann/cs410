@@ -1,0 +1,19 @@
+ENV["USE_FSC"] = "yes"
+
+require 'buildr/scala'
+
+repositories.remote << "http://mirrors.ibiblio.org/pub/mirrors/maven2"
+
+desc "cs410 compiler project, part 2"
+define "project11" do
+  project.version = "1.0.0"
+  project.group = "project11"
+  manifest["Copyright"] = "Dan Baumann (C) 2012"
+
+  run.using :main => ["compiler.Main", ARGV[1]]
+
+  task :document do
+    puts "Generating Scaladoc for #{project.name} in target/doc"
+    system "scaladoc -d target/doc src/main/scala/* 2> /dev/null"
+  end
+end
